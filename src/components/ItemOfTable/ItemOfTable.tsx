@@ -6,13 +6,13 @@ import { Person } from '../../types';
 
 type Props = {
   person: Person;
-  currentSlug: string;
+  selected: Person | undefined;
 };
 
 const NO_PARENTS = '-';
 
-export const ItemOfTable: React.FC<Props> = (props, currentSlug) => {
-  const { person } = props;
+export const ItemOfTable: React.FC<Props> = props => {
+  const { person, selected } = props;
   const { sex, born, died, fatherName, motherName, slug, mother, father } =
     person;
 
@@ -21,7 +21,7 @@ export const ItemOfTable: React.FC<Props> = (props, currentSlug) => {
       key={slug}
       data-cy="person"
       className={cn({
-        'has-background-warning': currentSlug === slug,
+        'has-background-warning': selected?.slug === slug,
       })}
     >
       <td>

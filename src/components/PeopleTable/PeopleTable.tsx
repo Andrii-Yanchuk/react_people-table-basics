@@ -11,7 +11,9 @@ const COLUMNS = ['Name', 'Sex', 'Born', 'Died', 'Mother', 'Father'];
 
 export const PeopleTable: React.FC<Props> = props => {
   const { people } = props;
-  const { slug: currentSlug } = useParams();
+  const { slug } = useParams();
+
+  const selected = people.find(person => person.slug === slug);
 
   return (
     <table
@@ -28,11 +30,7 @@ export const PeopleTable: React.FC<Props> = props => {
 
       <tbody>
         {people.map(person => (
-          <ItemOfTable
-            key={person.slug}
-            person={person}
-            currentSlug={currentSlug || ''}
-          />
+          <ItemOfTable key={person.slug} person={person} selected={selected} />
         ))}
       </tbody>
     </table>
