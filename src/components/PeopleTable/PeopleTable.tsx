@@ -1,19 +1,17 @@
 import React from 'react';
 import { Person } from '../../types';
+import { ItemOfTable } from '../ItemOfTable';
 import { useParams } from 'react-router-dom';
-import cn from 'classnames';
-import { PersonLink } from '../PersonLink';
 
 type Props = {
   people: Person[];
 };
 
+const COLUMNS = ['Name', 'Sex', 'Born', 'Died', 'Mother', 'Father'];
+
 export const PeopleTable: React.FC<Props> = props => {
   const { people } = props;
-
-  const { slug } = useParams();
-
-  const selected = people.find(person => person.slug === slug);
+  const { slug: currentSlug } = useParams();
 
   return (
     <table
@@ -22,47 +20,19 @@ export const PeopleTable: React.FC<Props> = props => {
     >
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Sex</th>
-          <th>Born</th>
-          <th>Died</th>
-          <th>Mother</th>
-          <th>Father</th>
+          {COLUMNS.map((column, index) => (
+            <th key={index}>{column}</th>
+          ))}
         </tr>
       </thead>
 
       <tbody>
         {people.map(person => (
-          <tr
+          <ItemOfTable
             key={person.slug}
-            data-cy="person"
-            className={cn({
-              'has-background-warning': selected?.slug === person.slug,
-            })}
-          >
-            <td>
-              <PersonLink person={person} />
-            </td>
-
-            <td>{person.sex}</td>
-            <td>{person.born}</td>
-            <td>{person.died}</td>
-
-            <td>
-              {person.mother ? (
-                <PersonLink person={person.mother} />
-              ) : (
-                person.motherName || '-'
-              )}
-            </td>
-            <td>
-              {person.father ? (
-                <PersonLink person={person.father} />
-              ) : (
-                person.fatherName || '-'
-              )}
-            </td>
-          </tr>
+            person={person}
+            currentSlug={currentSlug || ''}
+          />
         ))}
       </tbody>
     </table>

@@ -9,6 +9,9 @@ export const PeoplePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const isTableVisible = !isLoading && !!peoples.length;
+  const isTextVisible = !peoples.length && !error && !isLoading;
+
   const loadPeople = () => {
     setIsLoading(true);
     setError('');
@@ -44,10 +47,10 @@ export const PeoplePage = () => {
           </p>
         )}
 
-        {!peoples.length && !error && !isLoading && (
+        {isTextVisible && (
           <p data-cy="noPeopleMessage">There are no people on the server</p>
         )}
-        {!isLoading && !!peoples.length && <PeopleTable people={peoples} />}
+        {isTableVisible && <PeopleTable people={peoples} />}
       </div>
     </>
   );
